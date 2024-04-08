@@ -1,0 +1,6 @@
+flask 
+flask-smorest
+psycopg2-binary
+Flask-SQLAlchemy
+python-dotenv
+bcrypt
