@@ -2,7 +2,7 @@
 ## Team Name:  
 PetPal
 ## Team Members: 
-Chenguang Liu, Dao Zheng Chang, Favour Chiemerie Madubuko, Magnus Lovhoiden, Zhequn Wu
+Chenguang Liu, Dao Zheng Chang, Zhequn Wu
 
 ## Summary
 Our idea is to build an application that can leverage technology to improve a pet owner’s experience. There are 2 main facets to our application. Firstly, we want to create a platform where pet owners can rate points of interest based on their experiences of bringing their pets there. Next, we want to create a service that helps pet owners to plan a day out with their pets.
