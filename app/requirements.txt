@@ -4,3 +4,10 @@ psycopg2-binary
 Flask-SQLAlchemy
 python-dotenv
 bcrypt
+osmnx
+geopandas
+folium
+matplotlib
+mapclassify
+geopy
+geocoder
