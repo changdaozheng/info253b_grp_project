@@ -5,6 +5,7 @@ from database import db
 from config import DevelopmentConfig
 
 from routes.users_route import users_blp
+from routes.reviews_route import reviews_blp
 
 def create_app():
     """Create Flask application during initialisation """
@@ -22,6 +23,7 @@ def create_app():
     # init smorest api and Blueprints after initialising db
     api = Api(app)
     api.register_blueprint(users_blp)
+    api.register_blueprint(reviews_blp)
 
     return app
 
