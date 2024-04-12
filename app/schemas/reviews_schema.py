@@ -8,6 +8,7 @@ class ReviewsSchema(Schema):
     pet_id = fields.UUID()
     score = fields.Integer()
     content = fields.String()
+    title = fields.String()
 
 class ReviewsSchemaSingle(Schema):
     """Marshmallow schema for reviews"""
@@ -17,6 +18,7 @@ class ReviewsSchemaSingle(Schema):
     pet_id = fields.UUID()
     score = fields.Integer()
     content = fields.String()
+    title = fields.String()
 
 class ReviewsInputSchema(Schema):
     """Marshmallow schema for reviews"""
@@ -24,6 +26,7 @@ class ReviewsInputSchema(Schema):
     pet_id = fields.UUID()
     score = fields.Integer()
     content = fields.String()
+    title = fields.String()
 
     
 

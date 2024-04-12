@@ -61,6 +61,8 @@ class BulkOperations(MethodView):
         pet_id = request.args.get('pet_id')
         score = request.args.get('score')
         content = request.args.get('content')
+        title = request.args.get('title')
+
         try:
             reviews = Reviews.query.all()
 
@@ -73,7 +75,8 @@ class BulkOperations(MethodView):
                     uuid_condition_check(review.pet_id, pet_id) and
                     int_condition_check(review.score, score) and
                     str_condition_check(review.content, content) and
-                    uuid_condition_check(review.place_id, place_id)):
+                    uuid_condition_check(review.place_id, place_id) and
+                    str_condition_check(review.title, title)):
                     result.append(review)
             return result
 
@@ -96,7 +99,7 @@ class SpecificEntityOperations(MethodView):
         place_id_temp = review_data["place_id"]
 
         review = Reviews(user_id=user_id_temp, pet_id=pet_id_temp, place_id=place_id_temp,
-                         score=review_data["score"], content=review_data["content"])
+                         score=review_data["score"], content=review_data["content"], title=review_data["title"])
 
         try:
             db.session.add(review)
@@ -131,6 +134,7 @@ class SpecificEntityOperations(MethodView):
                 review.place_id = review_data["place_id"]
                 review.score = review_data["score"]
                 review.content = review_data["content"]
+                review.title = review_data["title"]
                 db.session.commit()
             else:
                 abort(403, message="unauthorized to make the change")
