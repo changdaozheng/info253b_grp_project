@@ -15,8 +15,4 @@ class Reviews(db.Model):
     content = db.Column(db.String, nullable=True)
     title = db.Column(db.String)
     
-    place =  db.relationship("PlaceModel")
-    user = db.relationship("Users")
-    pet = db.relationship("Pets")
-    
     

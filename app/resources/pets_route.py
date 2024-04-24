@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-from uuid import UUID as uuid_constructor
+from uuid import UUID 
 
 from schemas.pets_schema import PetsSchema
 from models.pets_model import Pets
@@ -23,7 +23,6 @@ class BulkOperations(MethodView):
     @pets_blp.response(200, PetsSchema)
     def post(self, pet_data):
         """Create new pet"""
-        print("here")
         pet = Pets(**pet_data)
 
         try:
@@ -39,10 +38,10 @@ class BulkOperations(MethodView):
     def get(self):
         """Retrieve all Pets information"""
         try: 
-            Pets = Pets.query.all()
-            if len(Pets) == 0:
+            pets = Pets.query.all()
+            if len(pets) == 0:
                 raise NoResultFound
-            return Pets
+            return pets
 
         except NoResultFound:
             abort(404, message="no Pets found")
@@ -59,7 +58,7 @@ class SpecificEntityOperations(MethodView):
     def get(self, pet_id):
         """Read pet information"""
         try:
-            pet_uuid = uuid_constructor(pet_id)
+            pet_uuid = UUID(pet_id)
             target_pet = Pets.query.get(pet_uuid)
             
             if target_pet == None:
@@ -79,7 +78,7 @@ class SpecificEntityOperations(MethodView):
     def put(self, new_pet_data, pet_id):
         """Update pet information"""
         try:
-            pet_uuid = uuid_constructor(pet_id)
+            pet_uuid = UUID(pet_id)
             target_pet = Pets.query.get(pet_uuid)
 
             if target_pet == None:
@@ -103,7 +102,7 @@ class SpecificEntityOperations(MethodView):
     def delete(self, pet_id):
         """Delete pet"""
         try:
-            pet_uuid = uuid_constructor(pet_id)
+            pet_uuid = UUID(pet_id)
             target_pet = Pets.query.get(pet_uuid)
             
             if target_pet == None:

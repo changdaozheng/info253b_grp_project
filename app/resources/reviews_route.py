@@ -3,9 +3,10 @@ import re
 
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError, ArgumentError, InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
-from uuid import UUID as uuid_constructor
+from sqlalchemy.orm import joinedload
+from uuid import UUID 
 from flask import request
 
 from schemas.users_schema import UsersSchema
@@ -99,9 +100,9 @@ class SpecificEntityOperations(MethodView):
         """ post a review of the current user"""
         
         review_data = request.get_json()
-        user_id_temp = uuid_constructor(user_id)
-        pet_id_temp = uuid_constructor(review_data["pet_id"])
-        place_id_temp = uuid_constructor(review_data["place_id"])
+        user_id_temp = UUID(user_id)
+        pet_id_temp = UUID(review_data["pet_id"])
+        place_id_temp = UUID(review_data["place_id"])
         
         review = Reviews(user_id=user_id_temp, pet_id=pet_id_temp, place_id=place_id_temp,
                          score=review_data["score"], content=review_data["content"], title=review_data["title"])
@@ -124,8 +125,6 @@ class SpecificEntityOperations(MethodView):
     def put(self, review_data, user_id, review_id):
         """edit a review"""
         # review_data = request.get_json()
-        print(review_data)
-        print(review_id)
         try:
             review_uuid = uuid.UUID(hex=review_id)
             # print(review_uuid.hex)
@@ -154,17 +153,15 @@ class SpecificEntityOperations(MethodView):
     @reviews_blp.response(204)
     def delete(self, user_id, review_id):
         """delete a review"""
-        review_uuid = uuid.UUID(hex=review_id)
+        review_uuid = UUID(review_id)
 
         try:
-            print(review_uuid.hex)
             review = Reviews.query.get(review_uuid)
-            print(review)
 
             if review is None:
                 raise NoResultFound
 
-            if review.user_id == uuid.UUID(hex=user_id):
+            if review.user_id == review_uuid:
                 db.session.delete(review)
                 db.session.commit()
 
