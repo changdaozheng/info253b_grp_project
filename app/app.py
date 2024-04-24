@@ -5,8 +5,11 @@ from flask_migrate import Migrate
 from database import db
 from config import DevelopmentConfig
 
-from resources.users_route import users_blp as UserBlueprint
-from resources.places_route import places_blp as PlaceBlueprint
+
+from resources.users_route import users_blp as UsersBlueprint
+from resources.places_route import places_blp as PlacesBlueprint
+from resources.reviews_route import reviews_blp as ReviewsBlueprint
+
 
 def create_app():
     """Create Flask application during initialisation """
@@ -24,8 +27,11 @@ def create_app():
 
     # init smorest api and Blueprints after initialising db
     api = Api(app)
-    # api.register_blueprint(UserBlueprint)
-    api.register_blueprint(PlaceBlueprint)
+
+    api.register_blueprint(PlacesBlueprint)
+    api.register_blueprint(UserBlueprint)
+    api.register_blueprint(ReviewsBlueprint)
+
 
     return app
 

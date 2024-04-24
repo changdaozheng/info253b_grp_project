@@ -13,4 +13,5 @@ class Reviews(db.Model):
     place_id = db.Column(UUID(as_uuid=True))
     score = db.Column(db.Integer) # out of 5
     content = db.Column(db.String, nullable=True)
+    title = db.Column(db.String)
     
