@@ -11,5 +11,3 @@ class Pets(db.Model):
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("users.id"))
     name = db.Column(db.String(50), unique=True, nullable=False)
     breed = db.Column(db.String(50), unique=True, nullable=False)
-    
-    user = db.relationship("Users")

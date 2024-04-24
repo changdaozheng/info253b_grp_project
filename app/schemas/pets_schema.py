@@ -6,4 +6,3 @@ class PetsSchema(Schema):
     user_id = fields.UUID()
     name = fields.String()
     breed = fields.String()
-    

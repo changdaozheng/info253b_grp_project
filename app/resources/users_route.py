@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-from uuid import UUID as uuid_constructor
+from uuid import UUID 
 
 from schemas.users_schema import UsersSchema, UserFavPlacesSchema
 from models.users_model import Users
@@ -59,7 +59,7 @@ class UsersSpecificEntityOperations(MethodView):
     def get(self, user_id):
         """Read user information"""
         try:
-            user_uuid = uuid_constructor(user_id)
+            user_uuid = UUID(user_id)
             target_user = Users.query.get(user_uuid)
             
             if target_user == None:
@@ -79,7 +79,7 @@ class UsersSpecificEntityOperations(MethodView):
     def put(self, new_user_data, user_id):
         """Update user information"""
         try:
-            user_uuid = uuid_constructor(user_id)
+            user_uuid = UUID(user_id)
             target_user = Users.query.get(user_uuid)
 
             if target_user == None:
@@ -103,7 +103,7 @@ class UsersSpecificEntityOperations(MethodView):
     def delete(self, user_id):
         """Delete user"""
         try:
-            user_uuid = uuid_constructor(user_id)
+            user_uuid = UUID(user_id)
             target_user = Users.query.get(user_uuid)
             
             if target_user == None:

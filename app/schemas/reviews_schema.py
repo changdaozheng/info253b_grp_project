@@ -1,4 +1,7 @@
 from marshmallow import Schema, fields
+from schemas.pets_schema import PetsSchema
+from schemas.users_schema import UsersSchema
+from schemas.places_schema import PlaceSchema
 
 class ReviewsSchema(Schema):
     """Marshmallow schema for reviews"""
