@@ -5,7 +5,7 @@ from marshmallow import Schema, fields
 
 class PlaceSchema(Schema):
     """Marshmallow schema for places"""
-    id = fields.Int(dump_only=True)
+    id = fields.UUID(dump_only=True)
     osmid = fields.Integer(required=True)
     name = fields.String(required=True)
     lat = fields.Float(required=True)

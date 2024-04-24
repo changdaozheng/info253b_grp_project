@@ -9,6 +9,7 @@ from config import DevelopmentConfig
 from resources.users_route import users_blp as UsersBlueprint
 from resources.places_route import places_blp as PlacesBlueprint
 from resources.reviews_route import reviews_blp as ReviewsBlueprint
+from resources.pets_route import pets_blp as PetsBlueprint
 
 
 def create_app():
@@ -29,8 +30,9 @@ def create_app():
     api = Api(app)
 
     api.register_blueprint(PlacesBlueprint)
-    api.register_blueprint(UserBlueprint)
+    api.register_blueprint(UsersBlueprint)
     api.register_blueprint(ReviewsBlueprint)
+    api.register_blueprint(PetsBlueprint)
 
 
     return app
@@ -49,5 +51,5 @@ if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5005)
 
     # application teardown
-    # remove_app(app, test_env=True)
+    remove_app(app, test_env=True) # wipes database when tearing down
     # remove_app(app)

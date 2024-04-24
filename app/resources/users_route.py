@@ -40,6 +40,7 @@ class UsersBulkOperations(MethodView):
         try: 
             users = Users.query.all()
             if len(users) == 0:
+                print("no users found")
                 raise NoResultFound
             return users
 
@@ -122,7 +123,7 @@ class UsersSpecificEntityOperations(MethodView):
 """
 Application logic for users
 """
-@users_blp.route("/users/<string: user_id>/favourites")
+@users_blp.route("/users/<string:user_id>/favourites")
 class FavLocationBulkOperations(MethodView):
     """Endpoints that handles operations on the entire user favourite table"""
 

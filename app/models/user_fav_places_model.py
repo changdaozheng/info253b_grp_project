@@ -7,5 +7,8 @@ class UserFavPlaces(db.Model):
 
     __tablename__ = "user_fav_places"
 
-    user_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4)
-    places_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = db.Column(UUID(as_uuid=True),  db.ForeignKey("users.id"), default=uuid.uuid4)
+    place_id = db.Column(UUID(as_uuid=True), db.ForeignKey("places.id"),  primary_key=True, default=uuid.uuid4)
+
+    user = db.relationship("Users")
+    place = db.relationship("PlaceModel")
