@@ -49,6 +49,7 @@ def get_pois(center_lat, center_lng):
     # print("State: ",first_row['addr:state'])
     # print("Country: ",first_row['addr:country'])
     # print("Opening hours: ",first_row['opening_hours'])
+    print(f"gdf_len:{len(gdf)}")
     return gdf
 
 

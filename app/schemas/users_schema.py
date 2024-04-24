@@ -9,4 +9,4 @@ class UsersSchema(Schema):
 class UserFavPlacesSchema(Schema):
     """Marshmallow schema for operations on user's favourite places"""
     user_id = fields.UUID()
-    places_id = fields.UUID()
+    place_id = fields.UUID()

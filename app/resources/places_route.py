@@ -26,7 +26,6 @@ class PlacesAPI(MethodView):
     
 
 
-
     # @places_blp.arguments(PlaceSchema)
     @places_blp.response(201, PlaceSchema(many=True))
     def post(self):
@@ -35,6 +34,7 @@ class PlacesAPI(MethodView):
         places = main()
         if not places.empty: ## when GeoDataFrame is empty
             for i in range(len(places)):
+                print(places)
                 osmid = int(places.index.get_level_values('osmid')[i])
                 print('osmid:', osmid)
                 row = places.iloc[i]
@@ -59,12 +59,13 @@ class PlacesAPI(MethodView):
                     'country': row['addr:country'] if not pd.isna(row['addr:country']) else None,
                 }
                 place = PlaceModel(**place_data)
-                # print('Place:', place_data)
+
                 try: 
                     db.session.add(place)
                     db.session.commit()
                     # print(f"Inserting place {place_data['name']}")
-                except SQLAlchemyError:
+                except SQLAlchemyError as e:
+                    print(e)
                     abort(400, message="An error occurred while inserting the place.")
         places = PlaceModel.query.all()
         places_data = PlaceSchema(many=True).dump(places)

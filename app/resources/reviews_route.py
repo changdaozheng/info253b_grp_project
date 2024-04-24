@@ -10,8 +10,10 @@ from flask import request
 
 from schemas.users_schema import UsersSchema
 from schemas.reviews_schema import ReviewsSchema, ReviewsInputSchema, ReviewsSchemaSingle
+
 from models.users_model import Users
-from models.reviews import Reviews
+from models.reviews_model import Reviews
+from models.pets_model import Pets
 
 from database import db
 
@@ -46,7 +48,9 @@ def str_condition_check(target, source_to_check):
             result = True
     return result
 
-
+"""
+CRUD
+"""
 @reviews_blp.route("/reviews")
 class BulkOperations(MethodView):
     """ Endpoints that handle multiple reviews"""
@@ -89,18 +93,19 @@ class BulkOperations(MethodView):
 class SpecificEntityOperations(MethodView):
     """ Endpoints that handle specified reviews"""
 
-    @reviews_blp.response(201, ReviewsSchema)
     @reviews_blp.arguments(ReviewsInputSchema)
+    @reviews_blp.response(201, ReviewsSchema)
     def post(self, review_data, user_id):
-        # review_data = request.get_json()
         """ post a review of the current user"""
-        user_id_temp = uuid.UUID(hex=user_id)
-        pet_id_temp = review_data["pet_id"]
-        place_id_temp = review_data["place_id"]
-
+        
+        review_data = request.get_json()
+        user_id_temp = uuid_constructor(user_id)
+        pet_id_temp = uuid_constructor(review_data["pet_id"])
+        place_id_temp = uuid_constructor(review_data["place_id"])
+        
         review = Reviews(user_id=user_id_temp, pet_id=pet_id_temp, place_id=place_id_temp,
                          score=review_data["score"], content=review_data["content"], title=review_data["title"])
-
+        
         try:
             db.session.add(review)
             db.session.commit()
@@ -108,6 +113,7 @@ class SpecificEntityOperations(MethodView):
             return review
         except SQLAlchemyError as e:
             abort(500, message="unable to post a review" + str(e))
+   
 
 
 @reviews_blp.route("/reviews/<string:user_id>/<string:review_id>")
@@ -166,5 +172,21 @@ class SpecificEntityOperations(MethodView):
             abort(404, message="review not found")
         except SQLAlchemyError:
             abort(500, message="unable to delete review")
+
+
+"""
+Search
+"""
+
+@reviews_blp.route("/reviews/petbreed/<string:breed>")
+class SearchByBreed(MethodView):
+
+    @reviews_blp.response(200, ReviewsSchema(many=True))
+    def get(self, breed):
+        """Read user information"""
+        reviews = Reviews.query.join(Pets).filter(Pets.breed == breed).all()
+
+        return reviews
+
 
 

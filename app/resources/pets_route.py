@@ -11,6 +11,9 @@ from database import db
 
 pets_blp = Blueprint("pets", __name__, description="operations on pets table")
 
+"""
+CRUD
+"""
 
 @pets_blp.route("/pets")
 class BulkOperations(MethodView):
@@ -20,6 +23,7 @@ class BulkOperations(MethodView):
     @pets_blp.response(200, PetsSchema)
     def post(self, pet_data):
         """Create new pet"""
+        print("here")
         pet = Pets(**pet_data)
 
         try:
