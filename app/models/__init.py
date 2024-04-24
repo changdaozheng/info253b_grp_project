@@ -1,1 +1,1 @@
-from models.places_model import PlaceModel
+from models.places_model import Places

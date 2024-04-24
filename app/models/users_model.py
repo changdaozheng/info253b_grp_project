@@ -11,3 +11,6 @@ class Users(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     # TODO: include authentication parameters
+
+    reviews = db.relationship("Reviews", back_populates="user")
+    

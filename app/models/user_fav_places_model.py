@@ -11,4 +11,4 @@ class UserFavPlaces(db.Model):
     place_id = db.Column(UUID(as_uuid=True), db.ForeignKey("places.id"),  primary_key=True, default=uuid.uuid4)
 
     user = db.relationship("Users")
-    place = db.relationship("PlaceModel")
+    place = db.relationship("Places")

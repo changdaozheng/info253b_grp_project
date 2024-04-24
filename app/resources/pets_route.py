@@ -6,14 +6,22 @@ from uuid import UUID
 
 from schemas.pets_schema import PetsSchema
 from models.pets_model import Pets
+from models.users_model import Users
 
 from database import db
 
 pets_blp = Blueprint("pets", __name__, description="operations on pets table")
 
 """
+Helper Functions
+"""
+def is_valid_user(user_id):
+    return Users.query.get(user_id) != None
+
+"""
 CRUD
 """
+
 
 @pets_blp.route("/pets")
 class BulkOperations(MethodView):
@@ -23,6 +31,10 @@ class BulkOperations(MethodView):
     @pets_blp.response(200, PetsSchema)
     def post(self, pet_data):
         """Create new pet"""
+        user_uuid = pet_data.get("user_id", None)
+        if not is_valid_user(user_uuid):
+            abort(400, message="User not found")
+            
         pet = Pets(**pet_data)
 
         try:

@@ -15,11 +15,15 @@ from schemas.reviews_schema import ReviewsSchema, ReviewsInputSchema, ReviewsSch
 from models.users_model import Users
 from models.reviews_model import Reviews
 from models.pets_model import Pets
+from models.places_model import Places
 
 from database import db
 
 reviews_blp = Blueprint("reviews", __name__, description="operations on users table")
 
+"""
+Helper Functions 
+"""
 
 def uuid_condition_check(target_number, source_to_check):
     result = False
@@ -48,6 +52,17 @@ def str_condition_check(target, source_to_check):
         if re.search(source_to_check, target):
             result = True
     return result
+
+
+def is_valid_user(user_id):
+    return Users.query.get(user_id) != None
+
+def is_valid_pet(pet_id):
+    return Pets.query.get(pet_id) != None
+
+def is_valid_place(place_id):
+    return Places.query.get(place_id) != None
+
 
 """
 CRUD
@@ -103,15 +118,24 @@ class SpecificEntityOperations(MethodView):
         user_id_temp = UUID(user_id)
         pet_id_temp = UUID(review_data["pet_id"])
         place_id_temp = UUID(review_data["place_id"])
-        
+
+        if not is_valid_user(user_id_temp):
+            abort(400, message="user not found")
+        elif not is_valid_pet(pet_id_temp):
+            abort(400, message="pet not found")
+        elif not is_valid_place(place_id_temp):
+            abort(400, message="place not found")
+
         review = Reviews(user_id=user_id_temp, pet_id=pet_id_temp, place_id=place_id_temp,
                          score=review_data["score"], content=review_data["content"], title=review_data["title"])
         
         try:
+            review = Reviews(user_id=user_id_temp, pet_id=pet_id_temp, place_id=place_id_temp, score=review_data["score"], content=review_data["content"], title=review_data["title"])
             db.session.add(review)
             db.session.commit()
 
             return review
+
         except SQLAlchemyError as e:
             abort(500, message="unable to post a review" + str(e))
    

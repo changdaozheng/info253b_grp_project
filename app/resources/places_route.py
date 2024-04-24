@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
 from schemas.places_schema import PlaceSchema, PlaceUpdateSchema
-from models.places_model import PlaceModel
+from models.places_model import Places
 
 from database import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,7 +21,7 @@ class PlacesAPI(MethodView):
     def get(self):
         """Get all places"""
         print("GET /places")
-        places = PlaceModel.query.all()
+        places = Places.query.all()
         return places
     
 
@@ -58,7 +58,7 @@ class PlacesAPI(MethodView):
                     'state': row['addr:state'] if not pd.isna(row['addr:state']) else None,
                     'country': row['addr:country'] if not pd.isna(row['addr:country']) else None,
                 }
-                place = PlaceModel(**place_data)
+                place = Places(**place_data)
 
                 try: 
                     db.session.add(place)
@@ -67,7 +67,7 @@ class PlacesAPI(MethodView):
                 except SQLAlchemyError as e:
                     print(e)
                     abort(400, message="An error occurred while inserting the place.")
-        places = PlaceModel.query.all()
+        places = Places.query.all()
         places_data = PlaceSchema(many=True).dump(places)
         print('---->>>>>>', places_data)
         return places_data
@@ -79,7 +79,7 @@ class PlaceAPI(MethodView):
         """Get place by id"""
         try:
             print(f"GET /place/{place_id}")
-            place = PlaceModel.query.get_or_404(place_id)
+            place = Places.query.get_or_404(place_id)
             return place
         except KeyError:
             abort(400, message="Place not found.")
@@ -88,7 +88,7 @@ class PlaceAPI(MethodView):
     @places_blp.response(200, PlaceSchema)
     def put(self, place_data, place_id):
         """Update place by id"""
-        place = PlaceModel.query.get(place_id)
+        place = Places.query.get(place_id)
         if place:
             place.osmid = place_data["osmid"]
             place.name = place_data["name"]
@@ -99,7 +99,7 @@ class PlaceAPI(MethodView):
             place.country = place_data["country"]
             place.category = place_data["category"]
         else:
-            place = PlaceModel(id=place_id, **place_data)
+            place = Places(id=place_id, **place_data)
         
         db.session.add(place)
         db.session.commit()
@@ -108,7 +108,7 @@ class PlaceAPI(MethodView):
 
     def delete(self, place_id):
         """Delete place by id"""
-        place = PlaceModel.query.get(place_id)
+        place = Places.query.get(place_id)
         if place:
             db.session.delete(place)
             db.session.commit()

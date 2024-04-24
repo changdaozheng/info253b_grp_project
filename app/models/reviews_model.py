@@ -15,4 +15,6 @@ class Reviews(db.Model):
     content = db.Column(db.String, nullable=True)
     title = db.Column(db.String)
     
+    # place = db.relationship("Places", back_populates="reviews")
+    user = db.relationship("Users", back_populates="reviews")
     

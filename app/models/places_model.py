@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
 
-class PlaceModel(db.Model):
+class Places(db.Model):
     """SQLAlchemy model for users table"""
     __tablename__ = "places"
 
@@ -17,3 +17,4 @@ class PlaceModel(db.Model):
     state = db.Column(db.String())
     country = db.Column(db.String())
 
+    # review = db.relationship("Reviews", back_populates="places")
