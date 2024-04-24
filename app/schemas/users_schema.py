@@ -5,5 +5,8 @@ class UsersSchema(Schema):
     id = fields.UUID(dump_only=True)
     username = fields.String()
     email = fields.String()
-    
 
+class UserFavPlacesSchema(Schema):
+    """Marshmallow schema for operations on user's favourite places"""
+    user_id = fields.UUID()
+    places_id = fields.UUID()

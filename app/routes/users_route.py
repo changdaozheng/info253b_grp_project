@@ -4,16 +4,19 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import UUID as uuid_constructor
 
-from schemas.users_schema import UsersSchema
+from schemas.users_schema import UsersSchema, UserFavPlacesSchema
 from models.users_model import Users
+from models.user_fav_places_model import UserFavPlaces
 
 from database import db
 
 users_blp = Blueprint("users", __name__, description="operations on users table")
 
-
+"""
+CRUD Methods
+"""
 @users_blp.route("/users")
-class BulkOperations(MethodView):
+class UsersBulkOperations(MethodView):
     """Endpoints that handles operations on the entire users table"""
 
     @users_blp.arguments(UsersSchema)
@@ -48,7 +51,7 @@ class BulkOperations(MethodView):
 
 
 @users_blp.route("/users/<string:user_id>")
-class SpecificEntityOperations(MethodView):
+class UsersSpecificEntityOperations(MethodView):
     """Endpoints that handles operations on a specific user"""
 
     @users_blp.response(200, UsersSchema)
@@ -114,3 +117,27 @@ class SpecificEntityOperations(MethodView):
             return
         except SQLAlchemyError:
             abort(500, message="unable to delete user")
+
+
+"""
+Application logic for users
+"""
+@users_blp.route("/users/<string: user_id>/favourites")
+class FavLocationBulkOperations(MethodView):
+    """Endpoints that handles operations on the entire user favourite table"""
+
+    @users_blp.arguments(UserFavPlacesSchema)
+    @users_blp.response(200, UserFavPlacesSchema)
+    def post(self, favourite_place_data, user_id):
+        """Create new user"""
+        favourite_place = UserFavPlaces(user_id, **favourite_place_data)
+
+        try:
+            db.session.add(favourite_place)
+            db.session.commit()
+            
+            return favourite_place
+        except SQLAlchemyError:
+            abort(500, message="unable to create register new favourite place")
+
+
