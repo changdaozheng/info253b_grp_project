@@ -4,4 +4,6 @@
 
 # file types
 .env
+*.db
 *.pyc
+

@@ -141,4 +141,3 @@ class FavLocationBulkOperations(MethodView):
         except SQLAlchemyError:
             abort(500, message="unable to create register new favourite place")
 
-
