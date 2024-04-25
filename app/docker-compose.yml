@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Use the environment variable
+      POSTGRES_DB: info253bgrp
+    ports:
+      - "5432:5432" # Expose PostgreSQL port
+    networks:
+      - my_network
+
+  my_application:
+    image: info253bgrp:latest
+    container_name: my_application
+    depends_on:
+      - postgres # Ensure PostgreSQL container is running before starting this one
+    ports:
+      - "5005:5000"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
