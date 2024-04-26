@@ -48,7 +48,7 @@ def remove_app(app, test_env=False):
 if __name__ == "__main__":
     # initialise and run application
     app = create_app()
-    app.run(debug=True, host="0.0.0.0", port=5005)
+    app.run(debug=True, host="0.0.0.0", port=5000)
 
     # application teardown
     remove_app(app, test_env=True) # wipes database when tearing down

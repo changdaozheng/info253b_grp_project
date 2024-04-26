@@ -11,7 +11,6 @@ class Config:
     OPENAPI_SWAGGER_UI_PATH = "/swagger-ui"
     OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///data.db")
-    # SQLALCHEMY_DATABASE_URI = f"postgresql://postgres:{os.environ.get('POSTGRES_PASSWORD')}@localhost:55003/info253"
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
